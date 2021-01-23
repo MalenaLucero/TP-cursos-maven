@@ -14,12 +14,6 @@ import base.menu.GradeMenu;
 import base.menu.TeacherMenu;
 import base.menu.MainMenu;
 import base.menu.StudentMenu;
-import base.test.CourseTest;
-import base.test.EnrollmentStateTest;
-import base.test.EnrollmentTest;
-import base.test.GradeTest;
-import base.test.StudentTest;
-import base.test.TeacherTest;
 import base.util.PrintUtil;
 
 //1. ABML de profes
@@ -63,9 +57,6 @@ public class AppCursos {
 						break;
 					case 6:
 						grade(sc, connection);
-						break;
-					case 99:
-						runTests(connection);
 						break;
 					default:
 						PrintUtil.invalidOptionMessage();
@@ -131,15 +122,5 @@ public class AppCursos {
 			GradeMenu.chooseMenuOption(sc, connection, option);
 			option = GradeMenu.showMenuAndInput(sc);
 		}
-	}
-	
-	private static void runTests(Connection connection) throws SQLException {
-		CourseTest.testCrud(connection);
-		StudentTest.testCrud(connection);
-		TeacherTest.testCrud(connection);
-		EnrollmentTest.testCrud(connection);
-		EnrollmentTest.testStudentsSearch(connection);
-		EnrollmentStateTest.testStateChange(connection);
-		GradeTest.test(connection);
 	}
 }
