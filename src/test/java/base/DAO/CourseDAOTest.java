@@ -11,6 +11,13 @@ import base.model.Course;
 
 public class CourseDAOTest {
 	@Test
+	public void findCourse() throws ClassNotFoundException, SQLException {
+		Connection connection = AdminDB.obtenerConexion();
+		Course course = CourseDAO.findById(connection, 1);
+		Assert.assertTrue(course != null);
+	}
+	
+	@Test
     public void listAllCourses() throws ClassNotFoundException, SQLException{
 		Connection connection = AdminDB.obtenerConexion();
 		List<Course> courses = CourseDAO.getAll(connection);
