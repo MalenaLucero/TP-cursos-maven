@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +36,12 @@ public class CourseDAO {
 	
 	public static int insert(Course course, Connection connection) throws SQLException {
 		String insertString = "INSERT INTO curso (nombre, id_catedra) values (?, ?)";
-		PreparedStatement addCourse = connection.prepareStatement(insertString);
+		PreparedStatement addCourse = connection.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
 		addCourse.setString(1, course.getName());
 		Helper.setPossibleNullInt(addCourse, 2, course.getCatedra());
-		return addCourse.executeUpdate();
+		addCourse.executeUpdate();
+		ResultSet res = addCourse.getGeneratedKeys();
+        return res.next() ? res.getInt(1) : 0;
 	}
 	
 	public static int update(Connection connection, Course course) throws SQLException {
@@ -55,6 +58,15 @@ public class CourseDAO {
 		PreparedStatement deleteCourse = connection.prepareStatement(deleteString);
 		deleteCourse.setInt(1, id);
 		return deleteCourse.executeUpdate();
+	}
+	
+	public static int lastInsertId(Connection connection) throws SQLException {
+		Statement statement = connection.createStatement();
+		String sql = "SELECT LAST_INSERT_ID()";
+		System.out.println("are you printing?");
+		int res = statement.executeUpdate(sql);
+		System.out.println("Insert" + res);
+		return res;
 	}
 	
 	private static Course generateCourse(ResultSet res) throws SQLException {

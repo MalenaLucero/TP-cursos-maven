@@ -11,41 +11,62 @@ import base.model.Course;
 
 public class CourseDAOTest {
 	@Test
-	public void findCourse() throws ClassNotFoundException, SQLException {
+	public void findCourseByIdTest() throws ClassNotFoundException, SQLException {
 		Connection connection = AdminDB.obtenerConexion();
 		Course course = CourseDAO.findById(connection, 1);
 		Assert.assertTrue(course != null);
 	}
 	
 	@Test
-    public void listAllCourses() throws ClassNotFoundException, SQLException{
+    public void listAllCoursesTest() throws ClassNotFoundException, SQLException{
 		Connection connection = AdminDB.obtenerConexion();
 		List<Course> courses = CourseDAO.getAll(connection);
         Assert.assertTrue(courses.size() > 0);
     }
 	
 	@Test
-	public void insertCourse() throws ClassNotFoundException, SQLException {
+	public void insertCourseTest() throws ClassNotFoundException, SQLException {
 		Connection connection = AdminDB.obtenerConexion();
 		Course course = new Course("test");
-		int res = CourseDAO.insert(course, connection);
-		Assert.assertEquals(1, res);
+		int id = CourseDAO.insert(course, connection);
+		if(id != 0) {
+			int deleteRes = CourseDAO.delete(id, connection);
+			Assert.assertEquals(1, deleteRes);
+		} else {
+			Assert.assertTrue("The element was not inserted", false);
+		}
 	}
 	
 	@Test
-	public void updateCourse() throws ClassNotFoundException, SQLException {
+	public void updateCourseTest() throws ClassNotFoundException, SQLException {
 		Connection connection = AdminDB.obtenerConexion();
-		Course course = CourseDAO.findByName(connection, "test");
-		course.setCatedra(1);
-		int res = CourseDAO.update(connection, course);
-		Assert.assertEquals(1, res);
+		Course newCourse = new Course("test");
+		int id = CourseDAO.insert(newCourse, connection);
+		if(id != 0) {
+			Course course = CourseDAO.findById(connection, id);
+			course.setCatedra(1);
+			int res = CourseDAO.update(connection, course);
+			if(res == 1) {
+				int deleteRes = CourseDAO.delete(id, connection);
+				Assert.assertEquals(1, deleteRes);
+			} else {
+				Assert.assertTrue("The element was not updated", false);
+			}
+		} else {
+			Assert.assertTrue("The element was not inserted", false);
+		}
 	}
 	
 	@Test
-	public void deleteCourse() throws ClassNotFoundException, SQLException {
+	public void deleteCourseTest() throws ClassNotFoundException, SQLException {
 		Connection connection = AdminDB.obtenerConexion();
-		Course course = CourseDAO.findByName(connection, "test");
-		int res = CourseDAO.delete(course.getId(), connection);
-		Assert.assertEquals(1, res);
+		Course course = new Course("test");
+		int id = CourseDAO.insert(course, connection);
+		if(id != 0) {
+			int deleteRes = CourseDAO.delete(id, connection);
+			Assert.assertEquals(1, deleteRes);
+		} else {
+			Assert.assertTrue("The element was not inserted", false);
+		}
 	}
 }

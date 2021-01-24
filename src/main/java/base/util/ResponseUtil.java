@@ -14,7 +14,7 @@ public class ResponseUtil {
 	}
 	
 	public static void actionMessage(String message, int res) {
-		if(res == 1) {
+		if(res != 0) {
 			System.out.println(message);
 		} else{
 			System.err.println("No " + message.toLowerCase());
