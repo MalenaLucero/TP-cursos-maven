@@ -25,7 +25,7 @@ public class CourseDAOTest {
     }
 	
 	@Test
-	public void insertCourseTest() throws ClassNotFoundException, SQLException {
+	public void insertAndDeleteCourseTest() throws ClassNotFoundException, SQLException {
 		Connection connection = AdminDB.obtenerConexion();
 		Course course = new Course("test");
 		int id = CourseDAO.insert(course, connection);
@@ -33,7 +33,7 @@ public class CourseDAOTest {
 			int deleteRes = CourseDAO.delete(id, connection);
 			Assert.assertEquals(1, deleteRes);
 		} else {
-			Assert.assertTrue("The element was not inserted", false);
+			Assert.assertTrue("The element was not inserted", id != 0);
 		}
 	}
 	
@@ -50,23 +50,10 @@ public class CourseDAOTest {
 				int deleteRes = CourseDAO.delete(id, connection);
 				Assert.assertEquals(1, deleteRes);
 			} else {
-				Assert.assertTrue("The element was not updated", false);
+				Assert.assertTrue("The element was not updated", res != 1);
 			}
 		} else {
-			Assert.assertTrue("The element was not inserted", false);
-		}
-	}
-	
-	@Test
-	public void deleteCourseTest() throws ClassNotFoundException, SQLException {
-		Connection connection = AdminDB.obtenerConexion();
-		Course course = new Course("test");
-		int id = CourseDAO.insert(course, connection);
-		if(id != 0) {
-			int deleteRes = CourseDAO.delete(id, connection);
-			Assert.assertEquals(1, deleteRes);
-		} else {
-			Assert.assertTrue("The element was not inserted", false);
+			Assert.assertTrue("The element was not inserted", id != 0);
 		}
 	}
 }
