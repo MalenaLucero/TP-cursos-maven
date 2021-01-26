@@ -34,6 +34,15 @@ public class EnrollmentDAO {
 		return generateEnrollmentList(res);
 	}
 	
+	public static List<Enrollment> findByStudentAndYear(Connection connection, int id_student, int year) throws SQLException {
+		String listString = "SELECT * FROM inscripcion WHERE id_alumno = ? AND ciclo_lectivo = ?";
+		PreparedStatement listEnrollments = connection.prepareStatement(listString);
+		listEnrollments.setInt(1, id_student);
+		listEnrollments.setInt(2, year);
+		ResultSet res = listEnrollments.executeQuery();
+		return generateEnrollmentList(res);
+	}
+	
 	public static Enrollment findByCourseAndStudent(Connection connection, int id_course, int id_student) throws SQLException {
 		String listString = "SELECT * FROM inscripcion WHERE id_curso = ? AND id_alumno = ?";
 		PreparedStatement findEnrollments = connection.prepareStatement(listString);

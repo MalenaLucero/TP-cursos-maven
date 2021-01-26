@@ -30,7 +30,8 @@ public class CourseDAOTest {
 		Course course = new Course("test");
 		int id = CourseDAO.insert(course, connection);
 		Assert.assertTrue(id != 0);
-		CourseDAO.delete(id, connection);
+		int res = CourseDAO.delete(id, connection);
+		Assert.assertTrue(res == 1);
 	}
 	
 	@Test
@@ -38,11 +39,13 @@ public class CourseDAOTest {
 		Connection connection = AdminDB.obtenerConexion();
 		Course newCourse = new Course("test");
 		int id = CourseDAO.insert(newCourse, connection);
+		Assert.assertTrue(id != 0);
 		Course course = CourseDAO.findById(connection, id);
 		course.setCatedra(1);
 		int res = CourseDAO.update(connection, course);
 		Assert.assertTrue(res == 1);
-		CourseDAO.delete(id, connection);
+		int deleteRes = CourseDAO.delete(id, connection);
+		Assert.assertTrue(deleteRes == 1);
 	}
 	
 	@Test

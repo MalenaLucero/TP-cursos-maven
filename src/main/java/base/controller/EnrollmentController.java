@@ -35,6 +35,8 @@ public class EnrollmentController{
 		System.out.println("Agregar inscripcion");
 		if (EnrollmentDAO.findByCourseAndStudent(connection, enrollment.getIdCourse(), enrollment.getIdStudent()) != null) {
 			System.err.println("El alumno ya esta inscripto");
+		} else if(EnrollmentDAO.findByStudentAndYear(connection, enrollment.getIdStudent(), enrollment.getYear()).size() > 1){
+			System.err.println("Limite de materias alcanzado");
 		} else {
 			int res = EnrollmentDAO.insert(enrollment, connection);
 			ResponseUtil.addMessage(res);
